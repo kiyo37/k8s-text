@@ -1,37 +1,29 @@
-name: Build PDF and HTML
+name: Test Pandoc
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Pandoc
-        run: sudo apt-get update && sudo apt-get install -y pandoc texlive-xetex
-
-      - name: Build PDF
+      - name: Install Pandoc and TeX
         run: |
-          pandoc main/*.md \
-          --metadata-file=metadata.yaml \
-          --template=template.tex \
-          --pdf-engine=xelatex \
-          -o kubernetes-text.pdf
+          sudo apt-get update
+          sudo apt-get install -y pandoc texlive-xetex
 
-      - name: Build HTML
-        run: |
-          pandoc main/*.md \
-          --metadata-file=metadata.yaml \
-          -s -o kubernetes-text.html
+      - name: Create sample Markdown
+        run: echo "# Hello Kubernetes" > hello.md
 
-      - name: Upload Artifacts
+      - name: Convert to PDF
+        run: pandoc hello.md -o hello.pdf
+
+      - name: Upload PDF
         uses: actions/upload-artifact@v3
         with:
-          name: kubernetes-text
-          path: |
-            *.pdf
-            *.html
+          name: hello-pdf
+          path: hello.pdf
