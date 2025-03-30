@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # ← ここを変更
 
     steps:
       - uses: actions/checkout@v3
@@ -31,7 +31,7 @@ jobs:
           -s -o kubernetes-text.html
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v3
         with:
           name: kubernetes-text
           path: |
