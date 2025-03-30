@@ -31,7 +31,7 @@ jobs:
           -s -o kubernetes-text.html
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@fd9bde433a43b3278a7c2cd30f4c7787649744a5
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: kubernetes-text
           path: |
