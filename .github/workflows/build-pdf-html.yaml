@@ -1,0 +1,36 @@
+name: Build PDF and HTML
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: pandoc/latex
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build PDF
+        run: |
+          pandoc main/*.md \
+          --metadata-file=metadata.yaml \
+          --template=template.tex \
+          --pdf-engine=xelatex \
+          -o kubernetes-text.pdf
+
+      - name: Build HTML
+        run: |
+          pandoc main/*.md \
+          --metadata-file=metadata.yaml \
+          -s -o kubernetes-text.html
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: kubernetes-text
+          path: |
+            *.pdf
+            *.html
